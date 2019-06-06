@@ -1,7 +1,9 @@
 # tarefas-app-fontend
 
 
-npm i --save webpack
+npm run dev
+
+npm run production
 
 
 
