@@ -4,9 +4,12 @@ import 'modules/font-awesome/css/font-awesome.min.css'
 //moduloes foi declarado no webpack.config.js
 
 import React from 'react'
+import Tarefa from '../tarefas/tarefas'
+import Sobre from '../sobre/sobre'
 
 export default props => (
     <div className='container'>
-        <h1>Teste</h1>
+        <Tarefa />
+        <Sobre />
     </div>
 );
