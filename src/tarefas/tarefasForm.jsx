@@ -9,11 +9,11 @@ export default props => {
             <Grid cols="12 9 10">
                 <input id="descricao" className="form-control" 
                     placeholder="Adicione uma tarefa"
-                    onChange={props.onChange}
+                    onChange={props.handleChange}
                     value={props.descricao}/>                
             </Grid>
             <Grid cols="12 3 2">
-            <IconButton style='primary' icon='plus' onClick={props.OnClick}/>
+            <IconButton style='primary' icon='plus' onClick={props.handleAdd}/>
             </Grid>
         </div>
     )

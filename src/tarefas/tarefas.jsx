@@ -4,6 +4,7 @@ import axios from 'axios';
 import PageHeader from '../template/pageHeader'
 import TarefasForm from './tarefasForm'
 import TarefasLista from './tarefasLista'
+import { timingSafeEqual } from 'crypto';
 
 const URL = "http://localhost:3003/api/tarefas";
 
@@ -12,29 +13,44 @@ export default class Tarefa extends Component {
     constructor(props){
         super(props);
         this.state = {descricao: '', lista: []};
-        this.addTarefa = this.addTarefa.bind(this);
-        this.onChange = this.onChange.bind(this);
+        this.handleAdd = this.handleAdd.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+        this.handleRemove = this.handleRemove.bind(this);
+
+        this.refresh();
     }
 
-    addTarefa(){
+    refresh(){
+        axios.get(`${URL}?sort=-criacao` )
+            .then((resp) => this.setState({...this.state, descricao: '', lista: resp.data}));
+    }
+
+    handleAdd(){
         const descricao = this.state.descricao;
         axios.post(URL, { descricao })
-            .then(resp => console.log("Ass"))
+            .then((resp) => this.refresh());
     }
 
-    onChange(e){
+    handleChange(e){
         this.setState({ ...this.state, descricao: e.target.value});        
     }
 
-    render(){
+    handleRemove(tarefa){
+        axios.delete(`${URL}/${tarefa._id}`)
+            .then((resp) => this.refresh());
+    }
+
+    render(){        
         return (
             <div>
                 <PageHeader name="Tarefas" small="Cadastro"/>
                 <TarefasForm 
                     descricao={this.state.descricao}
-                    onChange={this.onChange}
-                    OnClick={this.addTarefa} />
-                <TarefasLista />
+                    handleChange={this.handleChange}
+                    handleAdd={this.handleAdd} />
+                <TarefasLista 
+                    lista={this.state.lista}
+                    handleRemove={this.handleRemove}/>
             </div>
         );
     }
