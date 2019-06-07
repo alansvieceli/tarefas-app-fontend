@@ -6,9 +6,11 @@ import 'modules/font-awesome/css/font-awesome.min.css'
 import React from 'react'
 import Tarefa from '../tarefas/tarefas'
 import Sobre from '../sobre/sobre'
+import Menu from '../template/menu';
 
 export default props => (
     <div className='container'>
+        <Menu />
         <Tarefa />
         <Sobre />
     </div>
