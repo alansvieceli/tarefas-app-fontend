@@ -7,18 +7,27 @@ export default class Tarefa extends Component {
 
     constructor(props){
         super(props);
-        this.handleAdd = this.handleAdd.bind(this)
+        this.state = {descricao: '', lista: []};
+        this.OnClick = this.OnClick.bind(this);
+        this.onChange = this.onChange.bind(this);
     }
 
-    handleAdd(){
-        console.log(this);
+    OnClick(){
+        console.log(this.state.descricao);
+    }
+
+    onChange(e){
+        this.setState({ ...this.state, descricao: e.target.value});        
     }
 
     render(){
         return (
             <div>
                 <PageHeader name="Tarefas" small="Cadastro"/>
-                <TarefasForm handleAdd={this.handleAdd} />
+                <TarefasForm 
+                    descricao={this.state.descricao}
+                    onChange={this.onChange}
+                    OnClick={this.OnClick} />
                 <TarefasLista />
             </div>
         );
