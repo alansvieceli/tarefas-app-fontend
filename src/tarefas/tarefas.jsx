@@ -19,6 +19,7 @@ export default class Tarefa extends Component {
         this.handleMarkAsDone = this.handleMarkAsDone.bind(this);
         this.handleMarkAsPending = this.handleMarkAsPending.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
+        this.handleClear = this.handleClear.bind(this);
 
         this.refresh();
     }
@@ -63,6 +64,10 @@ export default class Tarefa extends Component {
         this.refresh(this.state.descricao);
     }
 
+    handleClear(){
+        this.refresh();
+    }
+
     render(){        
         return (
             <div>
@@ -71,7 +76,8 @@ export default class Tarefa extends Component {
                     descricao={this.state.descricao}
                     handleChange={this.handleChange}
                     handleAdd={this.handleAdd} 
-                    handleSearch={this.handleSearch} />
+                    handleSearch={this.handleSearch} 
+                    handleClear={this.handleClear} />
                 <TarefasLista 
                     lista={this.state.lista}
                     handleRemove={this.handleRemove}
