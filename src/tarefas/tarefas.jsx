@@ -18,13 +18,20 @@ export default class Tarefa extends Component {
         this.handleRemove = this.handleRemove.bind(this);
         this.handleMarkAsDone = this.handleMarkAsDone.bind(this);
         this.handleMarkAsPending = this.handleMarkAsPending.bind(this);
+        this.handleSearch = this.handleSearch.bind(this);
 
         this.refresh();
     }
 
-    refresh(){
-        axios.get(`${URL}?sort=-criacao` )
-            .then((resp) => this.setState({...this.state, descricao: '', lista: resp.data}));
+    refresh(descricao = ''){
+        /*
+            sorte = filtro automatico da api
+            __regex= automatio da api tbm
+
+        */
+       const search = descricao ? `&descricao__regex=/${descricao}/` : ''
+        axios.get(`${URL}?sort=-criacao${search}` )
+            .then((resp) => this.setState({...this.state, descricao, lista: resp.data}));
     }
 
     handleChange(e){
@@ -37,20 +44,23 @@ export default class Tarefa extends Component {
             .then((resp) => this.refresh());
     }
 
-    handleMarkAsDone(tarefa){
-        console.log();
+    handleMarkAsDone(tarefa){        
         axios.put(`${URL}/${tarefa._id}`, { ...tarefa, finalizada: true})
-            .then((resp) => this.refresh());
+            .then((resp) => this.refresh(this.state.descricao));
     }
 
     handleMarkAsPending(tarefa){
         axios.put(`${URL}/${tarefa._id}`, { ...tarefa, finalizada: false})
-            .then((resp) => this.refresh());
+            .then((resp) => this.refresh(this.state.descricao));
     }
 
     handleRemove(tarefa){
         axios.delete(`${URL}/${tarefa._id}`)
-            .then((resp) => this.refresh());
+            .then((resp) => this.refresh(this.state.descricao));
+    }
+
+    handleSearch(){
+        this.refresh(this.state.descricao);
     }
 
     render(){        
@@ -60,7 +70,8 @@ export default class Tarefa extends Component {
                 <TarefasForm 
                     descricao={this.state.descricao}
                     handleChange={this.handleChange}
-                    handleAdd={this.handleAdd} />
+                    handleAdd={this.handleAdd} 
+                    handleSearch={this.handleSearch} />
                 <TarefasLista 
                     lista={this.state.lista}
                     handleRemove={this.handleRemove}
