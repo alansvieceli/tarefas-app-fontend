@@ -16,6 +16,8 @@ export default class Tarefa extends Component {
         this.handleAdd = this.handleAdd.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleRemove = this.handleRemove.bind(this);
+        this.handleMarkAsDone = this.handleMarkAsDone.bind(this);
+        this.handleMarkAsPending = this.handleMarkAsPending.bind(this);
 
         this.refresh();
     }
@@ -25,14 +27,25 @@ export default class Tarefa extends Component {
             .then((resp) => this.setState({...this.state, descricao: '', lista: resp.data}));
     }
 
+    handleChange(e){
+        this.setState({ ...this.state, descricao: e.target.value});        
+    }
+
     handleAdd(){
         const descricao = this.state.descricao;
         axios.post(URL, { descricao })
             .then((resp) => this.refresh());
     }
 
-    handleChange(e){
-        this.setState({ ...this.state, descricao: e.target.value});        
+    handleMarkAsDone(tarefa){
+        console.log();
+        axios.put(`${URL}/${tarefa._id}`, { ...tarefa, finalizada: true})
+            .then((resp) => this.refresh());
+    }
+
+    handleMarkAsPending(tarefa){
+        axios.put(`${URL}/${tarefa._id}`, { ...tarefa, finalizada: false})
+            .then((resp) => this.refresh());
     }
 
     handleRemove(tarefa){
@@ -50,7 +63,9 @@ export default class Tarefa extends Component {
                     handleAdd={this.handleAdd} />
                 <TarefasLista 
                     lista={this.state.lista}
-                    handleRemove={this.handleRemove}/>
+                    handleRemove={this.handleRemove}
+                    handleMarkAsDone={this.handleMarkAsDone}
+                    handleMarkAsPending={this.handleMarkAsPending} />
             </div>
         );
     }
